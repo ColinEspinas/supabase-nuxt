@@ -1,40 +1,25 @@
 <script lang="ts" setup>
   import { PhFacebookLogo, PhGoogleLogo } from "phosphor-vue";
+  import { useAuthStore } from "~~/stores/auth";
 
   definePageMeta({
     middleware: 'guest'
   });
 
-  const user = useSupabaseUser();
-  const supabase = useSupabaseClient();
+  await useAuth();
+  const auth = useAuthStore();
   const router = useRouter();
   
   const email = ref('');
   const password = ref('');
 
   const login = async () => {
-    const { error } = await supabase.auth.signIn({
-      email: email.value, 
-      password: password.value
-    });
-
-    if (error) {
-      return alert('Something went wrong !' + error.message);
-    }
-
+    await auth.signIn(email.value, password.value);
     router.push('/');
   }
 
   const register = async () => {
-    const { error } = await supabase.auth.signUp({
-      email: email.value, 
-      password: password.value
-    });
-
-    if (error) {
-      return alert('Something went wrong !' + error.message);
-    }
-
+    await auth.signUp(email.value, password.value);
     router.push('/');
   }
 </script>
