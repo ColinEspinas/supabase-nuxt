@@ -6,21 +6,18 @@
     middleware: 'guest'
   });
 
-  await useAuth();
-  const auth = useAuthStore();
-  const router = useRouter();
+  const { signIn, signUp } = useAuth();
+  const route = useRoute();
   
   const email = ref('');
   const password = ref('');
 
   const login = async () => {
-    await auth.signIn(email.value, password.value);
-    router.push('/');
+    signIn(email.value, password.value, '/');
   }
 
   const register = async () => {
-    await auth.signUp(email.value, password.value);
-    router.push('/');
+    signUp(email.value, password.value, '/');
   }
 </script>
 

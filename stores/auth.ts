@@ -8,12 +8,10 @@ export const useAuthStore = defineStore('auth', () => {
 
   const user: Ref<User | null> = useSupabaseUser();
   const profile: Ref<Profile | null> = ref(null);
-  const isLoading: Ref<boolean> = ref(false);
 
   const getUserProfile = async () => {
     if (!!user.value) {
       try {
-        isLoading.value = true;
         const { error, data } = await supabase
           .from('profiles')
           .select('*')
@@ -22,62 +20,17 @@ export const useAuthStore = defineStore('auth', () => {
 
         if (error) throw error;
         profile.value = data;
-        isLoading.value = false;
       }
       catch(error) {
         profile.value = null;
         console.error(error);
-        isLoading.value = false;
-        return error;
       }
     }
     else {
       profile.value = null;
     }
+    return profile;
   }
 
-  const signIn = async (email: string, password: string) => {
-    try {
-      const { error, user: newUser } = await supabase.auth.signIn({
-        email,
-        password
-      });
-      if (error) throw error;
-      user.value = newUser;
-    }
-    catch(error) {
-      console.error(error);
-      return error;
-    }
-  }
-
-  const signUp = async (email: string, password: string) => {
-    try {
-      const { error, user: newUser } = await supabase.auth.signUp({
-        email,
-        password
-      });
-      if (error) throw error;
-      user.value = newUser;
-    }
-    catch(error) {
-      console.error(error);
-      return error;
-    }
-  }
-
-  const signOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      user.value = null;
-      profile.value = null;
-    }
-    catch(error) {
-      console.error(error);
-      return error;
-    }
-  }
-
-  return { user, profile, isLoading, signIn, signUp, signOut, getUserProfile };
+  return { user, profile, getUserProfile };
 });

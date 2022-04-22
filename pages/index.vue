@@ -5,21 +5,24 @@ import Navigation from '~~/components/navigation.vue';
     middleware: ['auth']
   });
 
-  await useAuth();
-  const auth = useAuthStore();
-  const router = useRouter();
+  const user = useSupabaseUser();
+  const { signOut } = useAuth();
+
+  const { data: profile } = await useAsyncData('profile', async () => {
+    const { getUserProfile } = useAuthStore();
+    return await getUserProfile();
+  });
 
   const logout = async () => {
-    await auth.signOut();
-    router.push('/login');
+    await signOut('login');
   }
 </script>
 
 <template>
   <NuxtLayout>
     <Navigation @logout="logout" />
-    <div class="flex flex-col mt-10">
-      <p>Your are connected as {{ auth.profile?.first_name }} {{ auth.profile?.last_name }} ({{ auth.user?.email }})</p>
+    <div v-if="profile" class="flex flex-col mt-10">
+      <p>Your are connected as {{ profile.first_name }}({{ user?.email }})</p>
     </div>
   </NuxtLayout>
 </template>
