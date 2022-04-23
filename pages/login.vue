@@ -1,6 +1,5 @@
 <script lang="ts" setup>
   import { PhFacebookLogo, PhGoogleLogo } from "phosphor-vue";
-  import { useAuthStore } from "~~/stores/auth";
 
   definePageMeta({
     middleware: 'guest'

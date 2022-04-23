@@ -1,13 +1,6 @@
-import { useAuthStore } from './../stores/auth';
-
 export const useAuth = () => {
-  const auth = useAuthStore();
   const supabase = useSupabaseClient();
   const route = useRoute();
-
-  supabase.auth.onAuthStateChange(() => {
-    auth.getUserProfile();
-  });
 
   const signIn = async (email: string, password: string, to?: string) => {
     try {
@@ -22,7 +15,7 @@ export const useAuth = () => {
     }
     catch(error) {
       console.error(error);
-      return error;
+      return { error };
     }
 
     navigateTo({ name: 'login', query: { redirect: to || route.query?.redirect } });
@@ -41,7 +34,7 @@ export const useAuth = () => {
     }
     catch(error) {
       console.error(error);
-      return error;
+      return { error };
     }
 
     navigateTo({ name: 'login', query: { redirect: to || route.query?.redirect } });
@@ -54,7 +47,7 @@ export const useAuth = () => {
     }
     catch(error) {
       console.error(error);
-      return error;
+      return { error };
     }
 
     navigateTo({ name: to });
