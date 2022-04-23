@@ -15,4 +15,4 @@ export const useUserProfile = (): Ref<Profile> => {
   });
 
   return profile;
-}
+};
