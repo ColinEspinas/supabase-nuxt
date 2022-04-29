@@ -21,11 +21,11 @@ module.exports = {
     'semi': ['error', 'always'],
     'indent': ['error', 2],
     'no-multi-spaces': ['error'],
-    'quote-props': ['error', 'consistent']
+    'quote-props': ['error', 'consistent'],
     'no-unused-vars': [
       'error',
       { vars: 'all', args: 'after-used', ignoreRestSiblings: false }
     ],
-    'no-console': 'off',
+    'no-console': 'off'
   }
 };
